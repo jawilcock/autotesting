@@ -20,7 +20,8 @@ public class main {
 
     @Test
     public void myTest(){
-        driver.navigate().to("https://twitch.tv/musseduch");
+        //driver.navigate().to("https://twitch.tv/musseduch");
+        System.out.println("Hello World");
     }
 
 }
