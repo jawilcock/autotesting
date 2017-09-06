@@ -5,6 +5,7 @@ import org.openqa.selenium.support.FindBy;
 public class Resizing {
     WebDriver driver;
 
-    @FindBy(className = "ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se")
+    @FindBy(css = "#resizable > div:nth-child(4)")
     static WebElement resizable;
+
 }

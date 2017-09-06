@@ -1,11 +1,12 @@
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import com.gargoylesoftware.htmlunit.Page;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
+
+import java.util.concurrent.TimeUnit;
 
 public class mouseTest {
 
@@ -29,6 +30,7 @@ public class mouseTest {
         PageFactory.initElements(driver,Draggable.class);
         PageFactory.initElements(driver,Dropping.class);
         PageFactory.initElements(driver,Resizing.class);
+        PageFactory.initElements(driver,Selectable.class);
     }
 
     @After
@@ -93,18 +95,20 @@ public class mouseTest {
         driver.navigate().to("http://demoqa.com/resizable/");
         resizingbox.log(Status.INFO,"Moved to the resizing page.");
 
-        int oldWidth = Resizing.resizable.getRect().width;
-        int oldHeight = Resizing.resizable.getRect().height;
+        int locX = Resizing.resizable.getLocation().x;
+        int locY = Resizing.resizable.getLocation().y;
 
         builder.dragAndDropBy(Resizing.resizable, 100, 100).perform();
         resizingbox.log(Status.INFO,"Attempted to resize box");
 
         try{
-            int difX = Resizing.resizable.getRect().width - oldWidth;
-            int difY = Resizing.resizable.getRect().height - oldHeight;
+            int newX = Resizing.resizable.getLocation().x - locX;
+            int newY = Resizing.resizable.getLocation().y - locY;
 
-            Assert.assertEquals(difX,100);
-            Assert.assertEquals(difY,100);
+
+            Assert.assertEquals(newX,83);
+            Assert.assertEquals(newY,83);
+
             resizingbox.log(Status.INFO,"Box dragged successfully");
             resizingbox.pass("Dragged");
         }
@@ -112,6 +116,41 @@ public class mouseTest {
             resizingbox.log(Status.INFO,"Failed dragging.");
             resizingbox.fail("Failed");
         }
+    }
+
+    @Test
+    public void TestSelectable(){
+        ExtentTest selectableBox = reportManager.setUpTest();
+
+        driver.navigate().to("http://demoqa.com/selectable/");
+        selectableBox.log(Status.INFO,"Moved to the selectable page.");
+
+        builder.dragAndDropBy(Selectable.firstselectable, 0, 300).perform();
+        selectableBox.log(Status.INFO,"Attempted to select all boxes");
+
+
+
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try{
+
+            Assert.assertEquals(Selectable.firstselectable.getAttribute("class").equalsIgnoreCase("ui-widget-content ui-corner-left ui-selectee ui-selected"),true);
+            Assert.assertEquals(Selectable.lastselectable.getAttribute("class").equalsIgnoreCase("ui-widget-content ui-corner-left ui-selectee ui-selected"),true);
+
+
+
+            selectableBox.log(Status.INFO,"Boxes selected successfully");
+            selectableBox.pass("Selected");
+        }
+        catch(AssertionError a){
+            selectableBox.log(Status.INFO,"Failed selecting.");
+            selectableBox.fail("Failed");
+        }
+
     }
 
     @AfterClass
