@@ -17,6 +17,18 @@ public class shopHome {
     @FindBy(css = ".icon-ok")
     static WebElement successTick;
 
-    @FindBy(css= ".shopping_cart")
+    @FindBy(css= ".shopping_cart > a:nth-child(1)")
     static WebElement cartButton;
+
+    @FindBy(css= ".sf-menu > li:nth-child(2) > a:nth-child(1)")
+    static WebElement dressButton;
+
+    @FindBy(css = ".login")
+    static WebElement signInButton;
+
+    @FindBy(css = "#email_create")
+    static WebElement emailTextBox;
+
+    @FindBy(css = "#SubmitCreate")
+    static WebElement createButton;
 }
