@@ -1,0 +1,5 @@
+Feature: First Feature File
+  Scenario: First Scenario
+    Given I want to test https://www.qa.com
+    When I click on About Us button
+    Then the About Us page loads
